@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class CustomerReverseOrder {
 
-    private Stack<Customer> stack = new Stack<>();
+    private final Stack<Customer> stack = new Stack<>();
 
     public void add(Customer customer) {
         stack.add(customer);

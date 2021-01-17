@@ -6,26 +6,29 @@ import java.util.TreeMap;
 
 public class CustomerService {
 
-    private TreeMap<Customer, String> map = new TreeMap<>();
+    private final TreeMap<Customer, String> map = new TreeMap<>();
 
     public Map.Entry<Customer, String> getSmallest() {
-        return new Map.Entry<>() { // Не уверен, что решение красивое, но так работает
-            @Override
-            public Customer getKey() {
-                Customer firstKeyCustomer = map.firstKey();
-                return new Customer(firstKeyCustomer.getId(), firstKeyCustomer.getName(), firstKeyCustomer.getScores());
-            }
+        return new MyEntry<>();
+    }
 
-            @Override
-            public String getValue() {
-                return map.firstEntry().getValue();
-            }
+    final class MyEntry<K, V> implements Map.Entry<K, V> {
 
-            @Override
-            public String setValue(String value) {
-                return null;
-            }
-        };
+        @Override
+        public K getKey() {
+            Customer firstKeyCustomer = map.firstKey();
+            return (K) new Customer(firstKeyCustomer.getId(), firstKeyCustomer.getName(), firstKeyCustomer.getScores());
+        }
+
+        @Override
+        public V getValue() {
+            return (V) map.firstEntry().getValue();
+        }
+
+        @Override
+        public Object setValue(Object value) {
+            return null;
+        }
     }
 
     public Map.Entry<Customer, String> getNext(Customer customer) {

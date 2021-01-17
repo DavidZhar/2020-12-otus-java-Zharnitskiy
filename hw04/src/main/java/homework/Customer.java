@@ -50,8 +50,7 @@ public class Customer implements Comparable<Customer> {
         Customer customer = (Customer) o;
 
         if (id != customer.id) return false;
-        if (scores != customer.scores) return false;
-        return name != null ? name.equals(customer.name) : customer.name == null;
+        return Objects.equals(name, customer.name);
     }
 
     @Override
