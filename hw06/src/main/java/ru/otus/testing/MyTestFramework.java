@@ -19,49 +19,77 @@ public class MyTestFramework {
         AtomicInteger testAmount = new AtomicInteger();
         AtomicInteger passedAmount = new AtomicInteger();
 
-        Arrays.stream(classes).forEach(clazz -> { // for each test class
+        runTestClasses(testAmount, passedAmount, classes);
+
+        showResults(testAmount, passedAmount);
+    }
+
+    private static void runTestClasses(AtomicInteger testAmount, AtomicInteger passedAmount, Class<?>[] classes) {
+        Arrays.stream(classes).forEach(clazz -> {
             Method[] methods = clazz.getDeclaredMethods();
             List<Method> testMethods = extractMethodsWithAnnotation(methods, Test.class);
             List<Method> beforeMethods = extractMethodsWithAnnotation(methods, Before.class);
             List<Method> afterMethods = extractMethodsWithAnnotation(methods, After.class);
             testAmount.addAndGet(testMethods.size());
 
-            testMethods.forEach(method -> { // for each test method
-                Object testClassInstance = null;
-                try {
-                    Constructor constructor = clazz.getDeclaredConstructor();
-                    constructor.setAccessible(true);
-                    testClassInstance = constructor.newInstance(); // create new instance of test class for each method
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    System.out.println("Could not create test class instance.");
-                    return;
-                }
-
-                try {
-                    boolean beforeMethodsDone = true;
-                    try {
-                        runMethods(beforeMethods, testClassInstance); // run all methods with @Before
-                    } catch (Exception e) {
-                        beforeMethodsDone = false;
-                    }
-
-                    if (beforeMethodsDone) { // invoke current @Test method if all @Before methods passed
-                        method.invoke(testClassInstance);
-                        passedAmount.addAndGet(1); // increment PASSED amount if @Test hasn't thrown an exception
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getCause().getMessage()); // show message of any exception from current @Test
-                } finally {
-                    try {
-                        runMethods(afterMethods, testClassInstance); // run all methods with @After
-                    } catch (Exception e) {
-                        System.out.println(e.getCause().getMessage());
-                    }
-                }
-            });
+            runTestMethods(passedAmount, clazz, testMethods, beforeMethods, afterMethods);
         });
+    }
 
-        System.out.println("Tests PASSED: " + passedAmount.get() + ". Tests FAILED: " + (testAmount.get() - passedAmount.get())
+    private static void runTestMethods(AtomicInteger passedAmount, Class<?> clazz, List<Method> testMethods,
+                                       List<Method> beforeMethods, List<Method> afterMethods) {
+        testMethods.forEach(method -> {
+            Object testClassInstance = createInstance(clazz);
+            if (testClassInstance == null) return;
+
+            try {
+                boolean beforeMethodsDone = runBeforeMethods(beforeMethods, testClassInstance);
+
+                if (beforeMethodsDone) {
+                    method.invoke(testClassInstance);
+                    passedAmount.addAndGet(1);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getCause().getMessage());
+            } finally {
+                runAfterMethods(afterMethods, testClassInstance);
+            }
+        });
+    }
+
+    private static Object createInstance(Class<?> clazz) {
+        Object testClassInstance;
+        try {
+            Constructor<?> constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            testClassInstance = constructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            System.out.println("Could not create test class instance.");
+            return null;
+        }
+        return testClassInstance;
+    }
+
+    private static boolean runBeforeMethods(List<Method> beforeMethods, Object testClassInstance) {
+        try {
+            runMethods(beforeMethods, testClassInstance);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static void runAfterMethods(List<Method> afterMethods, Object testClassInstance) {
+        try {
+            runMethods(afterMethods, testClassInstance);
+        } catch (Exception e) {
+            System.out.println(e.getCause().getMessage());
+        }
+    }
+
+    private static void showResults(AtomicInteger testAmount, AtomicInteger passedAmount) {
+        System.out.println("Tests PASSED: " + passedAmount.get() +
+                ". Tests FAILED: " + (testAmount.get() - passedAmount.get())
                 + " Total: " + testAmount.get());
     }
 
