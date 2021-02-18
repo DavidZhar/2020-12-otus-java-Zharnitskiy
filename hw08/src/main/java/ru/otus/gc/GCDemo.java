@@ -22,6 +22,7 @@ public class GCDemo {
     private static long gcTimeTotal;
     private static long gcYoungCountTotal;
     private static long gcFullCountTotal;
+    private static long gcMaxPause;
 
     private static final Object lock = new Object();
 
@@ -37,7 +38,8 @@ public class GCDemo {
             System.out.println("Total time (ms): " + (System.currentTimeMillis() - startTime) +
                     "\nGC time total (ms): " + gcTimeTotal +
                     "\nGC Young amount total: " + gcYoungCountTotal +
-                    "\nGC Full amount total: " + gcFullCountTotal);
+                    "\nGC Full amount total: " + gcFullCountTotal +
+                    "\nGC max pause: " + gcMaxPause);
         }
     }
 
@@ -52,6 +54,7 @@ public class GCDemo {
                     long duration = info.getGcInfo().getDuration();
 
                     synchronized (lock) {
+                        if (duration > gcMaxPause) gcMaxPause = duration;
                         gcTimePerMinute += duration;
                         gcTimeTotal += duration;
                         if (gcAction.contains("minor")) {
@@ -78,10 +81,12 @@ public class GCDemo {
                         System.out.println("Minute: " + ++minuteCount +
                                 "\nGC time (ms): " + gcTimePerMinute +
                                 "\nGC Young amount: " + gcYoungCountPerMinute +
-                                "\nGC Full amount: " + gcFullCountPerMinute);
+                                "\nGC Full amount: " + gcFullCountPerMinute +
+                                "\nGC max pause: " + gcMaxPause);
                         gcTimePerMinute = 0;
                         gcYoungCountPerMinute = 0;
                         gcFullCountPerMinute = 0;
+                        gcMaxPause = 0;
                     }
                 }
             } catch (InterruptedException ignored) {

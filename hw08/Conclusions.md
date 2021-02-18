@@ -20,6 +20,8 @@
 | GC Time (ms):      | 78        | 88 | 96 | 610 | 1309  |
 | GC Young amount    | 4         | 5  | 6  | 11  | 29    |
 | GC Full amount     | 0         | 0  | 0  | 4   | 7     |
+| Max GC time (ms):  | 35        | 26 | 20 | 170 | 170   |
+| Avg GC time (ms):  | 36        |    |    |     |       |
 | Total time (ms):   | 249.355   |    |    |     |       |
 | Objects in list 1: | 9.230.100 |    |    |     |       |
 
@@ -29,6 +31,8 @@
 | GC Time (ms):      | 69         | 96 | 66 | 74 | 59 | 1072  |
 | GC Young amount    | 4          | 5  | 5  | 4  | 6  | 31    |
 | GC Full amount     | 0          | 0  | 0  | 0  | 0  | 3     |
+| Max GC time (ms):  | 21         | 36 | 22 | 24 | 19 | 387   |
+| Avg GC time (ms):  | 32         |    |    |    |    |       |
 | Total time (ms):   | 353.851    |    |    |    |    |       |
 | Objects in list 1: | 13.845.150 |    |    |    |    |       |
 
@@ -40,6 +44,8 @@
 | GC Time (ms):      | 122       | 167 | 523 | 942 |\> 1754|
 | GC Young amount    | 2         | 2   | 2   | 0   | \> 6  |
 | GC Full amount     | 0         | 0   | 2   | 4   | \> 6  |
+| Max GC time (ms):  | 107       | 175 | 290 | 288 | 288   |
+| Avg GC time (ms):  | ~146      |     |     |     |       |
 | Total time (ms):   | 270.138   |     |     |     |       |
 | Objects in list 1: | 9.100.223 |     |     |     |       |
 
@@ -49,6 +55,8 @@
 | GC Time (ms):      | 125        | 170 | 266 | 95 | 640 | 403 |\> 1699|
 | GC Young amount    | 2          | 2   | 1   | 1  | 2   | 0   | \> 8  |
 | GC Full amount     | 0          | 0   | 1   | 0  | 2   | 1   | \> 4  |
+| Max GC time (ms):  | 67         | 98  | 193 | 98 | 324 | 473 | 473   |
+| Avg GC time (ms):  | ~142       |     |     |    |     |     |       |
 | Total time (ms):   | 568.369    |     |     |    |     |     |       |
 | Objects in list 1: | 13.719.081 |     |     |    |     |     |       |
 
@@ -60,6 +68,8 @@
 | GC Time (ms):      | 84        | 144 | 918   |
 | GC Young amount    | 2         | 2   | 5     |
 | GC Full amount     | 0         | 0   | 2     |
+| Max GC time (ms):  | 37        | 78  | 382   |
+| Avg GC time (ms):  | 131       |     |       |
 | Total time (ms):   | 168.833   |     |       |
 | Objects in list 1: | 6.153.400 |     |       |
 
@@ -69,6 +79,8 @@
 | GC Time (ms):      | 71        | 141 | 486 | 969 | 1667  |
 | GC Young amount    | 2         | 2   | 2   | 3   | 9     |
 | GC Full amount     | 0         | 0   | 1   | 1   | 2     |
+| Max GC time (ms):  | 38        | 78  | 390 | 593 | 593   |
+| Avg GC time (ms):  | 152       |     |     |     |       |
 | Total time (ms):   | 253.829   |     |     |     |       |
 | Objects in list 1: | 9.230.100 |     |     |     |       |
 
@@ -80,6 +92,8 @@
 | GC Time (ms):      | 574       | 1045 | 2485  |
 | GC Young amount    | 0         | 0    | 0     |
 | GC Full amount     | 5         | 5    | 13    |
+| Max GC time (ms):  | 159       | 399  | 590   |
+| Avg GC time (ms):  | 191       |      |       |
 | Total time (ms):   | 169.385   |      |       |
 | Objects in list 1: | 6.153.400 |      |       |
 
@@ -89,6 +103,8 @@
 | GC Time (ms):      | 361       | 696 | 1536 | 835 | 3904  |
 | GC Young amount    | 0         | 0   | 0    | 0   | 0     |
 | GC Full amount     | 2         | 3   | 4    | 2   | 13    |
+| Max GC time (ms):  | 200       | 306 | 456  | 669 | 669   |
+| Avg GC time (ms):  | 300       |     |      |     |       |
 | Total time (ms):   | 255.425   |     |      |     |       |
 | Objects in list 1: | 9.230.100 |     |      |     |       |
 
