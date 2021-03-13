@@ -18,7 +18,7 @@ public class Main {
             System.out.println(atm.withdraw(2000));
             System.out.println(atm.getBalance());
         } catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         System.out.println(atm.getBalanceByDenomination());
     }
