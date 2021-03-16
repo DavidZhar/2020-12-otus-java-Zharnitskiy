@@ -5,9 +5,9 @@ import ru.otus.model.Message;
 
 public class ProcessorThrowingExceptionEveryEvenSecond implements Processor {
 
-    private TimeProvider timeProvider = new TimeProvider();
+    private TimeProvider timeProvider;
 
-    public void setTimeProvider(TimeProvider timeProvider) {
+    public ProcessorThrowingExceptionEveryEvenSecond(TimeProvider timeProvider) {
         this.timeProvider = timeProvider;
     }
 

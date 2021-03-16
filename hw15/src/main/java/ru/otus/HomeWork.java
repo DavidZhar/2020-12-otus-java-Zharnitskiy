@@ -1,8 +1,7 @@
 package ru.otus;
 
 import ru.otus.handler.ComplexProcessor;
-import ru.otus.listener.ListenerHistory;
-import ru.otus.listener.ListenerPrinter;
+import ru.otus.listener.HistoryListener;
 import ru.otus.model.Message;
 import ru.otus.processor.*;
 
@@ -26,10 +25,10 @@ public class HomeWork {
          */
 
         var processors = List.of(new ProcessorSwapFields11And12(),
-                new LoggerProcessor(new ProcessorThrowingExceptionEveryEvenSecond()));
+                new LoggerProcessor(new ProcessorThrowingExceptionEveryEvenSecond(new TimeProvider())));
 
         var complexProcessor = new ComplexProcessor(processors, (ex) -> System.out.println(ex.getMessage()));
-        var listenerHistory = new ListenerHistory();
+        var listenerHistory = new HistoryListener();
         complexProcessor.addListener(listenerHistory);
 
         var message = new Message.Builder(1L)

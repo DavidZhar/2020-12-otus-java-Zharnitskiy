@@ -104,11 +104,9 @@ class ComplexProcessorTest {
         var timeProviderOdd = mock(TimeProvider.class);
         when(timeProviderOdd.getCurrentTime()).thenReturn(LocalDateTime.now().withSecond(3));
 
-        var processorEven = new ProcessorThrowingExceptionEveryEvenSecond();
-        processorEven.setTimeProvider(timeProviderEven);
+        var processorEven = new ProcessorThrowingExceptionEveryEvenSecond(timeProviderEven);
 
-        var processorOdd = new ProcessorThrowingExceptionEveryEvenSecond();
-        processorOdd.setTimeProvider(timeProviderOdd);
+        var processorOdd = new ProcessorThrowingExceptionEveryEvenSecond(timeProviderOdd);
 
         assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> processorEven.process(message));
         assertThat(processorOdd.process(message)).isEqualTo(message);
