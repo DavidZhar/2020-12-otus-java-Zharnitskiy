@@ -3,6 +3,8 @@ package ru.otus.cachehw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * @author sergey
  * created on 14.12.18.
@@ -11,7 +13,8 @@ public class HWCacheDemo {
     private static final Logger logger = LoggerFactory.getLogger(HWCacheDemo.class);
 
     public static void main(String[] args) {
-        new HWCacheDemo().demo();
+//        new HWCacheDemo().demo();
+        new HWCacheDemo().testMemoryDemo();
     }
 
     private void demo() {
@@ -31,5 +34,18 @@ public class HWCacheDemo {
         logger.info("getValue:{}", cache.get("1"));
         cache.remove("1");
         cache.removeListener(listener);
+    }
+
+    private void testMemoryDemo(){
+        HwCache<String, String> cache = new MyCache<>();
+
+        for (int i = 0; i < 100; i++) {
+            cache.put(String.valueOf(i), String.valueOf(i));
+        }
+
+        System.gc();
+
+        logger.info(String.valueOf(cache.get("1") == null)); // true
+
     }
 }
