@@ -10,12 +10,10 @@ import ru.otus.web.servlet.LoginServlet;
 import ru.otus.web.template.TemplateProcessor;
 
 public class ClientServer {
-    private final Gson gson;
     protected final TemplateProcessor templateProcessor;
     private final Server server;
 
     public ClientServer(int port, Gson gson, TemplateProcessor templateProcessor) {
-        this.gson = gson;
         this.templateProcessor = templateProcessor;
         server = new Server(port);
     }
