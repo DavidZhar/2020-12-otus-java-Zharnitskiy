@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Clients</title>
+
+    <script>
+        function addClient() {
+            let client = {};
+            client.name = document.getElementById("clientName").value;
+            client.address = {}
+            client.address.street = document.getElementById("clientAddress").value;
+            client.phones = []
+            document.getElementById("clientPhones").value.split(",").forEach(p => client.phones.push({number: p}));
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", '/client', true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    location.reload()
+                }
+            }
+            xhr.send(JSON.stringify(client));
+        }
+    </script>
+</head>
+
+<body>
+<h3>Clients:</h3>
+<table style="width: 400px" border="2">
+    <thead>
+    <tr>
+        <td style="width: 100px">Id</td>
+        <td style="width: 100px">Name</td>
+        <td style="width: 100px">Address</td>
+        <td style="width: 200px">Phones</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.getId()}"></td>
+        <td th:text="${client.getName()}"></td>
+        <td th:text="${client.getAddress() != null} ? ${client.getAddress().getStreet()}"></td>
+        <td><p th:each="phone : ${client.getPhones()}" th:text="${phone.getNumber()}"></p></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<h4>Add a client</h4>
+<div>
+    <br/>
+    <form>
+        <label>
+            Name<br/>
+            <input type="text" name="name" id="clientName">
+        </label>
+        <br/>
+        <label>
+            Address<br/>
+            <input type="text" name="address" id="clientAddress">
+        </label>
+        <br/>
+        <label>
+            Phones (separated by comma)<br/>
+            <input type="text" name="phones" id="clientPhones">
+        </label>
+        <br/>
+        <br/>
+        <input type="button" onclick="addClient()" value="ADD">
+    </form>
+</div>
+</body>
+</html>
