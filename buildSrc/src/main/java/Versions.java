@@ -5,4 +5,7 @@ public interface Versions {
     String jetty = "11.0.2";
     String freemarker = "2.3.31";
     String lombok = "1.18.20";
+    String sockjs = "1.1.2";
+    String stomp = "2.3.3-1";
+    String bootstrap = "4.4.1-1";
 }

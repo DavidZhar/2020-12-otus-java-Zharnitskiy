@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clients with WebSocket</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+
+<h3>Clients:</h3>
+<table id="clientTable" style="width: 400px" class="table table-dark" border="2">
+    <thead>
+    <tr>
+        <td style="width: 100px">Id</td>
+        <td style="width: 100px">Name</td>
+        <td style="width: 100px">Address</td>
+        <td style="width: 200px">Phones</td>
+    </tr>
+    </thead>
+    <tbody id="clientTableInner">
+    </tbody>
+</table>
+<br>
+<button id="getClients" class="btn btn-dark" type="submit">Reload clients</button>
+<br>
+<br>
+<h4>Add a client</h4>
+<div>
+    <br/>
+    <form>
+        <label>
+            Name<br/>
+            <input type="text" name="name" id="clientName">
+        </label>
+        <br/>
+        <label>
+            Address<br/>
+            <input type="text" name="address" id="clientAddress">
+        </label>
+        <br/>
+        <label>
+            Phones (separated by comma)<br/>
+            <input type="text" name="phones" id="clientPhones">
+        </label>
+        <br/>
+        <br/>
+        <button id="addClient" class="btn btn-dark" type="submit">Add client</button>
+    </form>
+</div>
+</body>
+</html>
