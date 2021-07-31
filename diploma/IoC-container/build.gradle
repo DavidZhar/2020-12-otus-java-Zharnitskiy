@@ -9,6 +9,9 @@ dependencies {
     implementation("org.reflections:reflections:${Versions.reflections}")
     implementation("org.hibernate:hibernate-core")
     implementation("ch.qos.logback:logback-classic")
+
+    implementation("org.projectlombok:lombok:${Versions.lombok}")
+    annotationProcessor("org.projectlombok:lombok:${Versions.lombok}")
 }
 
 compileJava.options.encoding = 'UTF-8'

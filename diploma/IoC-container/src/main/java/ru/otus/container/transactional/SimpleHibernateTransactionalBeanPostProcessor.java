@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HibernateTransactionalBeanPostProcessor implements BeanPostProcessor {
+public class SimpleHibernateTransactionalBeanPostProcessor implements BeanPostProcessor {
 
     private final SessionFactory sessionFactory;
 
-    public HibernateTransactionalBeanPostProcessor(SessionFactory sessionFactory) {
+    public SimpleHibernateTransactionalBeanPostProcessor(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -42,16 +42,15 @@ public class HibernateTransactionalBeanPostProcessor implements BeanPostProcesso
         return (T) Proxy
                 .newProxyInstance(ClassLoader.getSystemClassLoader(), clazz.getInterfaces(), (proxy, method, args) -> {
                     if (methodNames.contains(method.getName() + Arrays.toString(method.getParameterTypes()))) {
-                        try (Session session = sessionFactory.getCurrentSession()) {
-                            Transaction transaction = session.beginTransaction();
-                            try {
-                                Object result = method.invoke(bean, args);
-                                transaction.commit();
-                                return result;
-                            } catch (Exception ex) {
-                                transaction.rollback();
-                                throw ex;
-                            }
+                        Session session = sessionFactory.getCurrentSession();
+                        Transaction transaction = session.beginTransaction();
+                        try {
+                            Object result = method.invoke(bean, args);
+                            transaction.commit();
+                            return result;
+                        } catch (Exception ex) {
+                            transaction.rollback();
+                            throw ex;
                         }
                     }
                     return method.invoke(bean, args);

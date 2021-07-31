@@ -31,5 +31,6 @@ public class DataTemplateHibernate<T> implements DataTemplate<T> {
     @Override
     public void update(Session session, T object) {
         session.merge(object);
+        throw new RuntimeException("OOPS");
     }
 }

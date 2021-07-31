@@ -9,7 +9,10 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import ru.otus.container.annotation.*;
-import ru.otus.container.transactional.HibernateTransactionalBeanPostProcessor;
+import ru.otus.container.transactional.HibernateTransactionManager;
+import ru.otus.container.transactional.NotSoSimpleHibernateTransactionalBeanPostProcessor;
+import ru.otus.container.transactional.SimpleHibernateTransactionalBeanPostProcessor;
+import ru.otus.container.transactional.TransactionManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +68,8 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
             SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
 
             context.addBean("sessionFactory", SessionFactory.class, sessionFactory);
-            context.addBeanPostProcessor(new HibernateTransactionalBeanPostProcessor(sessionFactory));
+            TransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
+            context.addBeanPostProcessor(new NotSoSimpleHibernateTransactionalBeanPostProcessor(transactionManager));
         }
     }
 

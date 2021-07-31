@@ -48,7 +48,11 @@ public class DbServiceDemo {
         address2Updated.setClient(client2Updated);
         phone2Updated.setClient(client2Updated);
         //Saving updated client 2
-        dbServiceClient.saveClient(client2Updated);
+        try {
+            dbServiceClient.saveClient(client2Updated);
+        } catch (Exception e){
+            log.error("Client was not updated!");
+        }
 
         var clientUpdated = dbServiceClient.getClient(client2Selected.getId())
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + client2Selected.getId()));

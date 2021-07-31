@@ -1,7 +1,6 @@
 package ru.otus.equation.services;
 
 import ru.otus.container.annotation.Component;
-import ru.otus.container.annotation.Transactional;
 import ru.otus.equation.model.DivisionEquation;
 import ru.otus.equation.model.Equation;
 import ru.otus.equation.model.MultiplicationEquation;
