@@ -67,7 +67,7 @@ public class NotSoSimpleHibernateTransactionalBeanPostProcessor implements BeanP
                                     () -> method.invoke(bean, args));
                         } catch (Exception e) {
                             log.error("Exception during transaction executing", e);
-                            throw new RuntimeException("Exception during transaction executing", e);
+                            throw new DataBaseOperationException("Exception during transaction executing", e);
                         }
                     } else {
                         return method.invoke(bean, args);

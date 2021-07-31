@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DataTemplateHibernate<T> implements DataTemplate<T> {
+    private int counter = 0;
 
     private final Class<T> clazz;
 
@@ -31,6 +32,7 @@ public class DataTemplateHibernate<T> implements DataTemplate<T> {
     @Override
     public void update(Session session, T object) {
         session.merge(object);
-        throw new RuntimeException("OOPS");
+        if (counter > 0) throw new RuntimeException("OOPS");
+        counter++;
     }
 }

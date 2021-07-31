@@ -26,7 +26,7 @@ public class DbServiceDemo {
         address1.setClient(client1);
         phone1.setClient(client1);
         //Saving client 1
-        dbServiceClient.saveClient(client1);
+        Client client1Saved = dbServiceClient.saveClient(client1);
         //Creating client 2
         Address address2 = new Address("Street 2");
         Phone phone2 = new Phone("2 phone number");
@@ -35,6 +35,22 @@ public class DbServiceDemo {
         phone2.setClient(client2);
         //Saving client 2
         var client2Saved = dbServiceClient.saveClient(client2);
+
+        var client1Selected = dbServiceClient.getClient(client1Saved.getId())
+                .orElseThrow(() -> new RuntimeException("Client not found, id:" + client1Saved.getId()));
+        log.info("clientSecondSelected:{}", client1Selected);
+        //Updating client 1
+        Address address1Updated = new Address(client1Selected.getAddress().getId(), "Street 1 updated");
+        Phone phone1Updated = new Phone(client1Selected.getPhones().get(0).getId(), "1 phone number updated");
+        Phone phone1New = new Phone("1 phone number new");
+        Client client1Updated = new Client(client1Selected.getId(), "client 1 updated",
+                address1Updated, List.of(phone1Updated, phone1New));
+        address1Updated.setClient(client1Updated);
+        phone1Updated.setClient(client1Updated);
+        //Saving updated client 2
+        dbServiceClient.saveClient(client1Updated);
+        log.info("Client 1 was updated!");
+
 
         var client2Selected = dbServiceClient.getClient(client2Saved.getId())
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + client2Saved.getId()));
@@ -50,8 +66,8 @@ public class DbServiceDemo {
         //Saving updated client 2
         try {
             dbServiceClient.saveClient(client2Updated);
-        } catch (Exception e){
-            log.error("Client was not updated!");
+        } catch (Exception e) {
+            log.error("Client 2 was not updated!");
         }
 
         var clientUpdated = dbServiceClient.getClient(client2Selected.getId())
