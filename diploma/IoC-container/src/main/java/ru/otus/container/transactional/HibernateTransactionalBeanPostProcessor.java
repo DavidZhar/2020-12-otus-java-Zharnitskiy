@@ -4,22 +4,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.container.annotation.Transactional;
 import ru.otus.container.core.BeanPostProcessor;
-import ru.otus.container.core.ContextImpl;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotSoSimpleHibernateTransactionalBeanPostProcessor implements BeanPostProcessor {
+public class HibernateTransactionalBeanPostProcessor implements BeanPostProcessor {
 
-    private final static Logger log = LoggerFactory.getLogger(NotSoSimpleHibernateTransactionalBeanPostProcessor.class);
+    private final static Logger log = LoggerFactory.getLogger(HibernateTransactionalBeanPostProcessor.class);
 
     private final TransactionManager transactionManager;
 
-    public NotSoSimpleHibernateTransactionalBeanPostProcessor(TransactionManager transactionManager) {
+    public HibernateTransactionalBeanPostProcessor(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
 

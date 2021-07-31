@@ -73,6 +73,7 @@ public class BeanCreatorImpl implements BeanCreator {
                 .collect(Collectors.toList());
 
         try {
+            method.setAccessible(true);
             Object bean = method.invoke(configInstance, argsObjects.toArray());
             context.addBean(name, bean.getClass(), bean);
             return bean;
@@ -103,6 +104,7 @@ public class BeanCreatorImpl implements BeanCreator {
                     .collect(Collectors.toList());
 
             try {
+                constructor.setAccessible(true);
                 Object bean = constructor.newInstance(argsObjects.toArray());
                 context.addBean(name, beanType, bean);
                 return bean;
@@ -127,6 +129,7 @@ public class BeanCreatorImpl implements BeanCreator {
                     throw new RuntimeException("Something went wrong");
                 }
             });
+            context.addBean(name, beanType, bean);
             return bean;
         }
     }

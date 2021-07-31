@@ -13,8 +13,6 @@ public interface Context {
 
     void addBean(String beanName, Class<?> beanClass, Object bean);
 
-    void addBeanPostProcessor(BeanPostProcessor bpp);
-
     void addComponentClasses(Set<Class<?>> classes);
 
     void addBeanCreateMethod(Method m, Class<?> configClass);

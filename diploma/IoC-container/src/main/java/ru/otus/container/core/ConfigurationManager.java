@@ -5,9 +5,9 @@ import java.util.Set;
 
 public interface ConfigurationManager {
 
-    public void checkConfigClass(Class<?> configClass);
+    void checkConfigClass(Class<?> configClass);
 
-    public Set<Class<?>> processPackage(String packageName);
+    Set<Class<?>> processPackage(String packageName);
 
     void processConfigClasses(List<Class<?>> configClasses);
 }

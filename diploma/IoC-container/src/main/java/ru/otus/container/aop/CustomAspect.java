@@ -1,4 +1,4 @@
-package ru.otus.container.core;
+package ru.otus.container.aop;
 
 public interface CustomAspect {
     void before();

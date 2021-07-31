@@ -1,5 +1,6 @@
 package ru.otus.equation.services;
 
+import ru.otus.container.annotation.PostConstruct;
 import ru.otus.equation.model.Equation;
 import ru.otus.equation.model.GameResult;
 import ru.otus.equation.model.Player;
@@ -40,5 +41,10 @@ public class GameProcessorImpl implements GameProcessor {
             ioService.out(isRight? MSG_RIGHT_ANSWER : MSG_WRONG_ANSWER);
         });
         ioService.out(gameResult.toString());
+    }
+
+    @PostConstruct
+    private void meeeethod(){
+        System.out.println("HEEEEEEEY!!!!\n\n\n\nHEY!");
     }
 }
