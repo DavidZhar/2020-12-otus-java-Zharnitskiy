@@ -11,7 +11,7 @@ import ru.otus.container.service.ServiceB;
 public class ContainerTest {
 
     @Test
-    void shouldExecuteAspectBefore() {
+    void shouldCreateContextProperly() {
         Context context = new ContextImpl(ContainerConfig.class);
         ServiceA serviceA = context.getBean(ServiceA.class);
         ServiceB serviceB = context.getBean(ServiceB.class);

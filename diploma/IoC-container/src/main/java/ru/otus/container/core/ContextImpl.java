@@ -3,7 +3,6 @@ package ru.otus.container.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.container.aop.AspectBeanPostProcessor;
-import ru.otus.container.aop.AspectManager;
 import ru.otus.container.util.Pair;
 
 import java.lang.reflect.Method;
@@ -17,7 +16,6 @@ public class ContextImpl implements Context {
     private final List<Class<?>> configClasses = new ArrayList<>();
     private final Map<Class<?>, Pair<Method, Class<?>>> beanCreateMethods = new HashMap<>();
     private final List<Class<?>> componentClasses = new ArrayList<>();
-    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     private final ConfigurationManager configurationManager = new ConfigurationManagerImpl(this);
 
@@ -47,9 +45,14 @@ public class ContextImpl implements Context {
     private void initContext() {
         configurationManager.processConfigClasses(configClasses);
         new BeanCreatorImpl(this, beanCreateMethods, componentClasses).createBeans();
-        AspectManager.configureAspects(beansByName.values());
-        new BeanPostProcessorsProcessor(this).processBeanPostProcessors();
+        addDefaultBeanPostProcessors();
+        new BeanPostProcessorsProcessor().processBeanPostProcessors(this);
         log.debug("Context has been initialized!");
+    }
+
+    private void addDefaultBeanPostProcessors() {
+        addBean("postConstructBeanPostProcessor", PostConstructBeanPostProcessor.class, new PostConstructBeanPostProcessor());
+        addBean("aspectBeanPostProcessor", AspectBeanPostProcessor.class, new AspectBeanPostProcessor(this));
     }
 
     @Override

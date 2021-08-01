@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.container.annotation.Aspect;
 import ru.otus.container.core.BeanPostProcessor;
+import ru.otus.container.core.Context;
 
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -12,6 +13,12 @@ import java.util.Map;
 
 public class AspectBeanPostProcessor implements BeanPostProcessor {
     private final static Logger log = LoggerFactory.getLogger(AspectBeanPostProcessor.class);
+
+    private final Context context;
+
+    public AspectBeanPostProcessor(Context context) {
+        this.context = context;
+    }
 
     @Override
     public Object postProcess(Object bean) {
@@ -33,7 +40,7 @@ public class AspectBeanPostProcessor implements BeanPostProcessor {
                             getAspectDefinition(annotation));
                 });
 
-        if (methods.size() > 0) {
+        if (!methods.isEmpty()) {
             return createProxyWithWrappedMethods(beanClass, bean, methods);
         }
         return bean;
@@ -53,7 +60,12 @@ public class AspectBeanPostProcessor implements BeanPostProcessor {
                     String methodSignature = method.getName() + Arrays.toString(method.getParameterTypes());
                     if (methods.containsKey(methodSignature)) {
                         AspectDefinition aspectDefinition = methods.get(methodSignature);
-                        CustomAspect aspect = AspectManager.getAspectByType(aspectDefinition.getAspect());
+                        CustomAspect aspect = null;
+                        try {
+                            aspect = (CustomAspect) context.getBean(aspectDefinition.getAspect());
+                        } catch (Exception e) {
+                            throw new RuntimeException("Aspect should implement CustomAspect and be declared as a bean", e);
+                        }
                         try {
                             if (aspectDefinition.getType() == AspectType.BEFORE) {
                                 aspect.before();

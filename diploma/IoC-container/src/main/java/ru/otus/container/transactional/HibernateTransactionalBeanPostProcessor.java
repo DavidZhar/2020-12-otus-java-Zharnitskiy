@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.otus.container.annotation.Transactional;
 import ru.otus.container.core.BeanPostProcessor;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class HibernateTransactionalBeanPostProcessor implements BeanPostProcesso
         if (beanClass.isAnnotationPresent(Transactional.class)) {
             Transactional annotation = beanClass.getAnnotation(Transactional.class);
             Arrays.stream(beanClass.getDeclaredMethods())
-                    .forEach(m -> methods.put(m.getName() + Arrays.toString(m.getParameterTypes()),
+                    .forEach(m -> methods.put(getMethodSignature(m),
                             getTransactionObject(annotation)));
         }
 
@@ -36,7 +37,7 @@ public class HibernateTransactionalBeanPostProcessor implements BeanPostProcesso
                 .filter(m -> m.isAnnotationPresent(Transactional.class))
                 .forEach(m -> {
                     Transactional annotation = m.getAnnotation(Transactional.class);
-                    methods.put(m.getName() + Arrays.toString(m.getParameterTypes()),
+                    methods.put(getMethodSignature(m),
                             getTransactionObject(annotation));
                 });
 
@@ -57,7 +58,7 @@ public class HibernateTransactionalBeanPostProcessor implements BeanPostProcesso
     public <T> T createProxyWithWrappedMethods(Class<T> clazz, Object bean, Map<String, TransactionObject> methods) {
         Object proxyInstance = Proxy
                 .newProxyInstance(ClassLoader.getSystemClassLoader(), clazz.getInterfaces(), (proxy, method, args) -> {
-                    String methodSignature = method.getName() + Arrays.toString(method.getParameterTypes());
+                    String methodSignature = getMethodSignature(method);
                     if (methods.containsKey(methodSignature)) {
                         try {
                             return transactionManager.doInTransaction(methods.get(methodSignature),
@@ -71,5 +72,9 @@ public class HibernateTransactionalBeanPostProcessor implements BeanPostProcesso
                     }
                 });
         return (T) proxyInstance;
+    }
+
+    private String getMethodSignature(Method method) {
+        return method.getName() + Arrays.toString(method.getParameterTypes());
     }
 }
