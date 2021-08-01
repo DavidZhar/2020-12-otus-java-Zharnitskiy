@@ -6,22 +6,22 @@ import org.junit.jupiter.api.Test;
 import ru.otus.container.config.AspectConfig;
 import ru.otus.container.core.Context;
 import ru.otus.container.core.ContextImpl;
-import ru.otus.container.model.ServiceA;
+import ru.otus.container.model.ServiceC;
 
 public class AspectTest {
     public static boolean aspectCheck = false;
     public static boolean methodCheck = false;
 
     @BeforeEach
-    void setFalse(){
+    void setFalse() {
         aspectCheck = false;
         methodCheck = false;
     }
 
     @Test
-    void shouldExecuteAspectBefore(){
+    void shouldExecuteAspectBefore() {
         Context context = new ContextImpl(AspectConfig.class);
-        ServiceA bean = context.getBean(ServiceA.class);
+        ServiceC bean = context.getBean(ServiceC.class);
 
         bean.methodForAspectTestingBefore();
 
@@ -30,9 +30,9 @@ public class AspectTest {
     }
 
     @Test
-    void shouldExecuteAspectAfter(){
+    void shouldExecuteAspectAfter() {
         Context context = new ContextImpl(AspectConfig.class);
-        ServiceA bean = context.getBean(ServiceA.class);
+        ServiceC bean = context.getBean(ServiceC.class);
 
         bean.methodForAspectTestingAfter();
 

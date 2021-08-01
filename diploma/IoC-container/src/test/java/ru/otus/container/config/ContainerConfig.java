@@ -8,14 +8,16 @@ import ru.otus.container.model.ServiceB;
 import ru.otus.container.model.ServiceBImpl;
 
 @Configuration
-public class PostConstructConfig {
+public class ContainerConfig {
+
     @Bean
     public ServiceA serviceA() {
         return new ServiceAImpl();
     }
 
-    @Bean
+    @Bean(name = "serviceBCustomName")
     public ServiceB serviceB(ServiceA serviceA) {
         return new ServiceBImpl(serviceA);
     }
+
 }
