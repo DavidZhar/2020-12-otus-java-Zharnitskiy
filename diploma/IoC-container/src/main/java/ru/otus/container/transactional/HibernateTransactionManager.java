@@ -21,29 +21,19 @@ public class HibernateTransactionManager implements TransactionManager {
         T result;
 
         switch (propagation) {
-            case NEW:
-                Session session1 = sessionFactory.getCurrentSession();
-                result = createNewTransactionAndExecute(action, isolation, session1);
-                break;
 
             case REQUIRED:
-                Session session2 = sessionFactory.getCurrentSession();
-                Transaction transaction2 = session2.getTransaction();
-                if (transaction2.getStatus() == TransactionStatus.ACTIVE) {
-                    result = execute(action, isolation, session2, transaction2);
+                Session session = sessionFactory.getCurrentSession();
+                Transaction transaction = session.getTransaction();
+                if (transaction == null || transaction.getStatus() == TransactionStatus.ACTIVE) {
+                    result = action.call();
                 } else {
-                    result = createNewTransactionAndExecute(action, isolation, session2);
+                    result = createNewTransactionAndExecute(action, isolation, session);
                 }
                 break;
 
             case SUPPORTS:
-                Session session3 = sessionFactory.getCurrentSession();
-                Transaction transaction3 = session3.getTransaction();
-                if (transaction3.getStatus() == TransactionStatus.ACTIVE) {
-                    result = execute(action, isolation, session3, transaction3);
-                } else {
-                    result = action.call();
-                }
+                result = action.call();
                 break;
 
             default:
@@ -54,10 +44,10 @@ public class HibernateTransactionManager implements TransactionManager {
 
     private <T> T createNewTransactionAndExecute(Callable<T> action, Isolation isolation, Session session) throws Exception {
         var transaction = session.beginTransaction();
-        return execute(action, isolation, session, transaction);
+        return executeAndCommitOrRollback(action, isolation, session, transaction);
     }
 
-    private <T> T execute(Callable<T> action, Isolation isolation, Session session, Transaction transaction) throws Exception {
+    private <T> T executeAndCommitOrRollback(Callable<T> action, Isolation isolation, Session session, Transaction transaction) throws Exception {
         try {
             setIsolationLevel(isolation, session);
             var result = action.call();

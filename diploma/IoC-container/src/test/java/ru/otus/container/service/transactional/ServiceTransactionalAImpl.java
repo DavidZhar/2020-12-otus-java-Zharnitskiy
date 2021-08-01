@@ -4,7 +4,7 @@ import ru.otus.container.annotation.Transactional;
 
 import java.util.concurrent.Callable;
 
-public class ServiceTransactionalImpl implements ServiceTransactional {
+public class ServiceTransactionalAImpl implements ServiceTransactionalA {
 
     @Override
     @Transactional

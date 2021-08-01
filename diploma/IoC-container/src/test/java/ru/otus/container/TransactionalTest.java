@@ -9,7 +9,8 @@ import ru.otus.container.config.TransactionalConfig;
 import ru.otus.container.core.Context;
 import ru.otus.container.core.ContextImpl;
 import ru.otus.container.model.User;
-import ru.otus.container.service.transactional.ServiceTransactional;
+import ru.otus.container.service.transactional.ServiceTransactionalA;
+import ru.otus.container.service.transactional.ServiceTransactionalB;
 
 public class TransactionalTest {
 
@@ -17,7 +18,7 @@ public class TransactionalTest {
     void shouldOpenAndCloseTransaction() throws Exception {
         Context context = new ContextImpl(TransactionalConfig.class);
 
-        ServiceTransactional bean = context.getBean(ServiceTransactional.class);
+        ServiceTransactionalA bean = context.getBean(ServiceTransactionalA.class);
         SessionFactory sessionFactory = context.getBean(SessionFactory.class);
 
         Transaction transactionClosed = bean.transactionalMethod(() -> {
@@ -30,10 +31,31 @@ public class TransactionalTest {
     }
 
     @Test
+    void shouldNotOpenNewTransactionWithDefaultPropagation() throws Exception {
+        Context context = new ContextImpl(TransactionalConfig.class);
+
+        ServiceTransactionalA serviceA = context.getBean(ServiceTransactionalA.class);
+        ServiceTransactionalB serviceB = context.getBean(ServiceTransactionalB.class);
+        SessionFactory sessionFactory = context.getBean(SessionFactory.class);
+
+        serviceA.transactionalMethod(() -> {
+            Transaction transaction = sessionFactory.getCurrentSession().getTransaction();
+            Assertions.assertTrue(transaction.isActive());
+            serviceB.transactionalMethod(() -> {
+                Transaction transactionOther = sessionFactory.getCurrentSession().getTransaction();
+                Assertions.assertTrue(transactionOther.isActive());
+                Assertions.assertEquals(transaction, transactionOther);
+                return null;
+            });
+            return transaction;
+        });
+    }
+
+    @Test
     void shouldRollbackInCaseOfException() throws Exception {
         Context context = new ContextImpl(TransactionalConfig.class);
 
-        ServiceTransactional bean = context.getBean(ServiceTransactional.class);
+        ServiceTransactionalA bean = context.getBean(ServiceTransactionalA.class);
         SessionFactory sessionFactory = context.getBean(SessionFactory.class);
 
         User newUser = bean.transactionalMethod(() -> {

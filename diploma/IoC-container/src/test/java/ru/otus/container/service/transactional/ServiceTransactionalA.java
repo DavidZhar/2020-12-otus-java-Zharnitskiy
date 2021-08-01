@@ -4,7 +4,6 @@ import ru.otus.container.annotation.Transactional;
 
 import java.util.concurrent.Callable;
 
-public interface ServiceTransactional {
-    @Transactional
+public interface ServiceTransactionalA {
     <V> V transactionalMethod(Callable<V> action) throws Exception;
 }
