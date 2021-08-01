@@ -44,7 +44,7 @@ public class GameProcessorImpl implements GameProcessor {
     }
 
     @PostConstruct
-    private void meeeethod(){
-        System.out.println("HEEEEEEEY!!!!\n\n\n\nHEY!");
+    public void postConstructMethod(){
+        System.out.println("\nHEY!!!\n");
     }
 }
