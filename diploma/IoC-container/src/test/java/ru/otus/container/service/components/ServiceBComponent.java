@@ -1,4 +1,4 @@
-package ru.otus.container.model.components;
+package ru.otus.container.service.components;
 
 public interface ServiceBComponent {
     ServiceAComponent getServiceAComponent();

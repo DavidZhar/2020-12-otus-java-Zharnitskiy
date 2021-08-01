@@ -2,9 +2,9 @@ package ru.otus.container.core;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.otus.container.model.ServiceA;
-import ru.otus.container.model.ServiceAImpl;
-import ru.otus.container.model.ServiceAImplAnother;
+import ru.otus.container.service.ServiceA;
+import ru.otus.container.service.ServiceAImpl;
+import ru.otus.container.service.ServiceAImplAnother;
 
 public class ContextImplTest {
 

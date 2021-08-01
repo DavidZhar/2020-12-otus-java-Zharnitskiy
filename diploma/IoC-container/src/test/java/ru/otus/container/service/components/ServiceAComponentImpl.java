@@ -1,8 +1,8 @@
-package ru.otus.container.model.components;
+package ru.otus.container.service.components;
 
 import ru.otus.container.annotation.Autowired;
 import ru.otus.container.annotation.Component;
-import ru.otus.container.model.ServiceA;
+import ru.otus.container.service.ServiceA;
 
 @Component
 public class ServiceAComponentImpl implements ServiceAComponent {

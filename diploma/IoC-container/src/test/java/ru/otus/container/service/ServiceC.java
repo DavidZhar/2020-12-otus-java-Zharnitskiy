@@ -1,4 +1,4 @@
-package ru.otus.container.model;
+package ru.otus.container.service;
 
 public interface ServiceC {
     void methodForAspectTestingBefore();

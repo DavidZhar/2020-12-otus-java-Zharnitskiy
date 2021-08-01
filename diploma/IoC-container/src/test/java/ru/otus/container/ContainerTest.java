@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import ru.otus.container.config.ContainerConfig;
 import ru.otus.container.core.Context;
 import ru.otus.container.core.ContextImpl;
-import ru.otus.container.model.ServiceA;
-import ru.otus.container.model.ServiceB;
+import ru.otus.container.service.ServiceA;
+import ru.otus.container.service.ServiceB;
 
 public class ContainerTest {
 

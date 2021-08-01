@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 import ru.otus.container.config.ComponentConfig;
 import ru.otus.container.core.Context;
 import ru.otus.container.core.ContextImpl;
-import ru.otus.container.model.ServiceA;
-import ru.otus.container.model.components.ServiceAComponent;
-import ru.otus.container.model.components.ServiceBComponent;
+import ru.otus.container.service.ServiceA;
+import ru.otus.container.service.components.ServiceAComponent;
+import ru.otus.container.service.components.ServiceBComponent;
 
 public class ComponentTest {
 
     @Test
-    void shouldExecuteAspectBefore() {
+    void shouldLoadComponentsProperly() {
         Context context = new ContextImpl(ComponentConfig.class);
         ServiceBComponent serviceBComponent = context.getBean(ServiceBComponent.class);
         ServiceAComponent serviceAComponent = context.getBean(ServiceAComponent.class);

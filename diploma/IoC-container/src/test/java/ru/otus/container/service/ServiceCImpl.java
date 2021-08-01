@@ -1,4 +1,4 @@
-package ru.otus.container.model;
+package ru.otus.container.service;
 
 import ru.otus.container.AspectTest;
 import ru.otus.container.annotation.Aspect;

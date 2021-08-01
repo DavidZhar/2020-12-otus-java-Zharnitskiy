@@ -1,4 +1,4 @@
-package ru.otus.container.model.components;
+package ru.otus.container.service.components;
 
 import ru.otus.container.annotation.Autowired;
 import ru.otus.container.annotation.Component;
