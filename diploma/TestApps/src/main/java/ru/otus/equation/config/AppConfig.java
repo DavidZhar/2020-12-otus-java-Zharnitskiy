@@ -20,7 +20,7 @@ public class AppConfig {
 //        return new PlayerServiceImpl(ioService);
 //    }
 
-    @Bean
+    @Bean(name = "gameProcessor")
     public GameProcessor gameProcessor(IOService ioService,
                                        PlayerService playerService,
                                        EquationPreparer equationPreparer) {

@@ -6,10 +6,12 @@ import ru.otus.container.annotation.Aspect;
 import ru.otus.container.core.BeanPostProcessor;
 import ru.otus.container.core.Context;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AspectBeanPostProcessor implements BeanPostProcessor {
     private final static Logger log = LoggerFactory.getLogger(AspectBeanPostProcessor.class);
@@ -27,23 +29,23 @@ public class AspectBeanPostProcessor implements BeanPostProcessor {
 
         if (beanClass.isAnnotationPresent(Aspect.class)) {
             Aspect annotation = beanClass.getAnnotation(Aspect.class);
-            Arrays.stream(beanClass.getDeclaredMethods())
-                    .forEach(m -> methods.put(m.getName() + Arrays.toString(m.getParameterTypes()),
-                            getAspectDefinition(annotation)));
+            methods.putAll(Arrays.stream(beanClass.getDeclaredMethods())
+                    .collect(Collectors.toMap(this::getMethodSignature, m -> getAspectDefinition(annotation))));
         }
 
-        Arrays.stream(beanClass.getDeclaredMethods())
+        methods.putAll(Arrays.stream(beanClass.getDeclaredMethods())
                 .filter(m -> m.isAnnotationPresent(Aspect.class))
-                .forEach(m -> {
-                    Aspect annotation = m.getAnnotation(Aspect.class);
-                    methods.put(m.getName() + Arrays.toString(m.getParameterTypes()),
-                            getAspectDefinition(annotation));
-                });
+                .collect(Collectors.toMap(this::getMethodSignature,
+                        m -> getAspectDefinition(m.getAnnotation(Aspect.class)))));
 
         if (!methods.isEmpty()) {
             return createProxyWithWrappedMethods(beanClass, bean, methods);
         }
         return bean;
+    }
+
+    private String getMethodSignature(Method m) {
+        return m.getName() + Arrays.toString(m.getParameterTypes());
     }
 
     private AspectDefinition getAspectDefinition(Aspect annotation) {
@@ -57,7 +59,7 @@ public class AspectBeanPostProcessor implements BeanPostProcessor {
         Object proxyInstance = Proxy
                 .newProxyInstance(ClassLoader.getSystemClassLoader(), beanClass
                         .getInterfaces(), (proxy, method, args) -> {
-                    String methodSignature = method.getName() + Arrays.toString(method.getParameterTypes());
+                    String methodSignature = getMethodSignature(method);
                     if (methods.containsKey(methodSignature)) {
                         AspectDefinition aspectDefinition = methods.get(methodSignature);
                         CustomAspect aspect = null;
